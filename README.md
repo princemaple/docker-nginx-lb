@@ -6,6 +6,8 @@
 You can find the image at [Docker Hub](https://hub.docker.com/r/princemaple/consul-template-nginx/)
 
     docker pull princemaple/consul-template-nginx:v1
+    
+mount your own nginx.conf into the container if you need more complex configuration
 
 ## See it working
 
