@@ -3,6 +3,10 @@
 
 *this is a fork of [docker-loadbalancer](https://github.com/bellycard/docker-loadbalancer)*
 
+You can find the image at [Docker Hub](https://hub.docker.com/r/princemaple/consul-template-nginx/)
+
+    docker pull princemaple/consul-template-nginx:v1
+
 ## See it working
 
     docker-compose build
