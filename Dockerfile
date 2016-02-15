@@ -1,13 +1,13 @@
-FROM nginx:1.7
-MAINTAINER Shane Sveller <shane@bellycard.com>
+FROM nginx:1.9.10
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -qq && \
-    apt-get -y install curl runit && \
+    apt-get -y install curl runit unzip && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CT_URL https://github.com/hashicorp/consul-template/releases/download/v0.1.0/consul-template_0.1.0_linux_amd64.tar.gz
-RUN curl -L $CT_URL | tar -C /usr/local/bin --strip-components 1 -zxf -
+ENV CT_URL https://releases.hashicorp.com/consul-template/0.12.2/consul-template_0.12.2_linux_amd64.zip
+ENV CT_FN consul-template.zip
+RUN curl -L $CT_URL > CT_FN && unzip CT_FN -d /usr/local/bin && rm CT_FN
 
 ADD nginx.service /etc/service/nginx/run
 ADD consul-template.service /etc/service/consul-template/run
