@@ -1,4 +1,4 @@
-FROM nginx:1.9.10
+FROM nginx:1.9.11
 MAINTAINER Po Chen <chenpaul914@gmail.com>
 
 RUN DEBIAN_FRONTEND=noninteractive \
