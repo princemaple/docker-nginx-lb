@@ -1,29 +1,32 @@
-app:
-  image: tutum/hello-world:latest
-  environment:
-    SERVICE_80_NAME: http
-    SERVICE_NAME: app
-    SERVICE_TAGS: production
-  ports:
-    - "80"
-lb:
-  build: .
-  links:
-    - consul
-  ports:
-    - "80:80"
-consul:
-  image: gliderlabs/consul-server:latest
-  command: -bootstrap
-  ports:
-    - "8300:8300"
-    - "8400:8400"
-    - "8500:8500"
-    - "8600:53/udp"
-registrator:
-  image: gliderlabs/registrator:latest
-  links:
-    - consul
-  command: -internal -resync 600 consul://consul:8500
-  volumes:
-    - "/var/run/docker.sock:/tmp/docker.sock"
+version: '2'
+services:
+  app:
+    image: tutum/hello-world:latest
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: production
+    ports:
+      - "80"
+  lb:
+    build:
+      context: .
+    image: consul-template-nginx
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+  consul:
+    image: gliderlabs/consul-server:latest
+    command: -bootstrap
+    ports:
+      - "8300:8300"
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:53/udp"
+  registrator:
+    image: gliderlabs/registrator:master
+    depends_on:
+      - consul
+    command: -internal -resync 600 consul://consul:8500
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
